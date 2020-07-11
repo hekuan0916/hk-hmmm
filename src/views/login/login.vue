@@ -7,15 +7,15 @@
         <span class="midline">|</span>
         <span>用户登录</span>
       </h3>
-      <el-form :model="form" class="form">
-        <el-form-item>
+      <el-form :model="form" class="form" :rules="rules" ref="form">
+        <el-form-item prop="phone">
           <el-input
             v-model="form.phone"
             placeholder="请输入手机号"
             prefix-icon="el-icon-user"
           ></el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input
             v-model="form.password"
             placeholder="请输入密码"
@@ -23,7 +23,7 @@
             :show-password="true"
           ></el-input
         ></el-form-item>
-        <el-form-item>
+        <el-form-item prop="code">
           <el-row>
             <el-col :span="16">
               <el-input
@@ -37,7 +37,7 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item>
+        <el-form-item prop="isPass">
           <el-checkbox v-model="form.isPass">
             我已阅读并同意<el-link type="primary">用户协议</el-link>和<el-link
               type="primary"
@@ -46,18 +46,28 @@
           >
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" class="btn">登陆</el-button>
+          <el-button type="primary" :plain="true" class="btn" @click="submit"
+            >登陆</el-button
+          >
           <br />
-          <el-button type="primary" class="btn">注册</el-button>
+          <el-button type="primary" class="btn" @click="showRegister"
+            >注册</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
     <img src="@/assets/img/login_right.png" alt />
+    <register ref="register"></register>
   </div>
 </template>
 
 <script>
+import register from "./register";
+
 export default {
+  components: {
+    register,
+  },
   data() {
     return {
       form: {
@@ -66,7 +76,70 @@ export default {
         code: "",
         isPass: "",
       },
+      rules: {
+        phone: [
+          {
+            required: true,
+            message: "请输入11位手机号码",
+            trigger: "change",
+          },
+          {
+            min: 11,
+            max: 11,
+            message: "兄弟锤子哦",
+            trigger: "blur",
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码",
+            trigger: "change",
+          },
+          {
+            min: 6,
+            max: 12,
+            message: "请输入6-12位密码",
+            trigger: "blur",
+          },
+        ],
+        code: [
+          {
+            required: true,
+            message: "请输入验证码",
+            trigger: "change",
+          },
+          {
+            min: 4,
+            max: 4,
+            message: "憨憨式输入?",
+            trigger: "change",
+          },
+        ],
+        isPass: [
+          {
+            required: true,
+            message: "请勾选",
+            trigger: "change",
+          },
+        ],
+      },
     };
+  },
+  methods: {
+    submit() {
+      this.$refs.form.validate((result) => {
+        if (result) {
+          this.$message.success("牛批");
+        } else {
+          this.$message.error("憨批");
+        }
+      });
+    },
+    showRegister() {
+      // console.log(this.$refs.register);
+      this.$refs.register.isShow = true;
+    },
   },
 };
 </script>

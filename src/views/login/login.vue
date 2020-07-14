@@ -33,7 +33,7 @@
               ></el-input>
             </el-col>
             <el-col :span="8">
-              <img src="@/assets/img/code.jpg" alt="" />
+              <img :src="codeURL" alt="" @click="clickCode" v-if="bol" />
             </el-col>
           </el-row>
         </el-form-item>
@@ -70,6 +70,8 @@ export default {
   },
   data() {
     return {
+      codeURL: process.env.VUE_APP_URL + "/captcha?type=login",
+      bol: true,
       form: {
         phone: "",
         password: "",
@@ -139,6 +141,12 @@ export default {
     showRegister() {
       // console.log(this.$refs.register);
       this.$refs.register.isShow = true;
+    },
+    clickCode() {
+      this.bol = false;
+      this.$nextTick(() => {
+        this.bol = true;
+      });
     },
   },
 };

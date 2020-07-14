@@ -63,10 +63,18 @@
 
 <script>
 import register from "./register";
+import { toLogin } from "@/api/login.js";
+import { saveLocal } from "@/utils/local.js";
+import { getLocal } from "@/utils/local.js";
 
 export default {
   components: {
     register,
+  },
+  created() {
+    if (getLocal()) {
+      this.$router.push("/layout");
+    }
   },
   data() {
     return {
@@ -83,6 +91,17 @@ export default {
           {
             required: true,
             message: "请输入11位手机号码",
+            trigger: "change",
+          },
+          {
+            validator: (rule, value, callback) => {
+              let _reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+              if (_reg.test(value)) {
+                callback();
+              } else {
+                callback(new Error("请正确输入手机号"));
+              }
+            },
             trigger: "change",
           },
           {
@@ -124,6 +143,16 @@ export default {
             message: "请勾选",
             trigger: "change",
           },
+          {
+            validator: (rule, value, callback) => {
+              if (value === true) {
+                callback();
+              } else {
+                callback(new Error("请勾选协议"));
+              }
+            },
+            trigger: "change",
+          },
         ],
       },
     };
@@ -132,7 +161,13 @@ export default {
     submit() {
       this.$refs.form.validate((result) => {
         if (result) {
-          this.$message.success("牛批");
+          // this.$message.success("牛批");
+          toLogin(this.form).then((res) => {
+            this.$message.success("登陆成功");
+            saveLocal(res.data.token);
+            // console.log(res);
+            this.$router.push("/layout");
+          });
         } else {
           this.$message.error("憨批");
         }
@@ -143,10 +178,13 @@ export default {
       this.$refs.register.isShow = true;
     },
     clickCode() {
-      this.bol = false;
-      this.$nextTick(() => {
-        this.bol = true;
-      });
+      //静默刷新
+      // this.bol = false;
+      // this.$nextTick(() => {
+      //   this.bol = true;
+      // });
+      this.codeURL =
+        process.env.VUE_APP_URL + "/captcha?type=login&asdsa=" + Date.now();
     },
   },
 };

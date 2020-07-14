@@ -72,15 +72,6 @@ export default {
   watch: {
     isShow(newVal) {
       if (newVal == false) {
-        // this.form = {
-        //   avatar: "", //是	string	头像地址
-        //   username: "", //是	string	用户名
-        //   email: "", //是	string	邮箱
-        //   phone: "", //是	string	手机号
-        //   password: "", //是	string	密码
-        //   code: "", //图形码
-        //   rcode: "", //是	string	验证码
-        // };
         this.$refs.form.resetFields();
         this.imageUrl = "";
       }
@@ -185,11 +176,9 @@ export default {
     submit() {
       this.$refs.form.validate((result) => {
         if (result) {
-          registerUser(this.form).then((res) => {
-            if (res.data.code == 200) {
-              this.$message.success("注册成功");
-              this.isShow = false;
-            }
+          registerUser(this.form).then(() => {
+            this.$message.success("注册成功");
+            this.isShow = false;
           });
           // this.$message.success("验证通过");
         } else {
@@ -220,6 +209,7 @@ export default {
         })
           .then((res) => {
             this.$message.success(res.data.data.captcha + "");
+            console.log(this.$message.success(res.data.data.captcha + ""));
           })
           .catch((error) => {
             window.console.log("获取验证码错误信息:", error);

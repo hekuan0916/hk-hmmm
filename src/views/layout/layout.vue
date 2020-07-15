@@ -2,7 +2,7 @@
   <el-container class="layout">
     <el-header class="header">
       <ul class="header-ul">
-        <li class="el-icon-s-fold f20"></li>
+        <li class="el-icon-s-fold f20" @click="collapse = !collapse"></li>
         <li>
           <img src="@/assets/img/layout-logo.png" alt="" />
         </li>
@@ -23,8 +23,38 @@
       </ul>
     </el-header>
     <el-container>
-      <el-aside width="200px" class="aside">Aside</el-aside>
-      <el-main class="main">Main</el-main>
+      <el-aside width="auto" class="aside">
+        <el-menu
+          :default-active="$route.path"
+          class="el-menu-vertical-demo"
+          :collapse="collapse"
+          router
+        >
+          <el-menu-item index="chart">
+            <i class="el-icon-pie-chart"></i>
+            <span slot="title">数据概览</span>
+          </el-menu-item>
+          <el-menu-item index="userlist">
+            <i class="el-icon-user"></i>
+            <span slot="title">用户列表</span>
+          </el-menu-item>
+          <el-menu-item index="question">
+            <i class="el-icon-edit-outline"></i>
+            <span slot="title">题库列表</span>
+          </el-menu-item>
+          <el-menu-item index="business">
+            <i class="el-icon-office-building"></i>
+            <span slot="title">企业列表</span>
+          </el-menu-item>
+          <el-menu-item index="subject">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">学科列表</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main class="main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -37,6 +67,7 @@ export default {
     return {
       baseURL: process.env.VUE_APP_URL,
       userInfo: "",
+      collapse: false,
     };
   },
   created() {
@@ -98,10 +129,14 @@ export default {
     }
   }
   .aside {
-    background-color: #00f;
+    // background-color: #00f;
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+      width: 200px;
+      min-height: 400px;
+    }
   }
   .main {
-    background-color: #e8e9ec;
+    // background-color: #e8e9ec;
   }
 }
 </style>

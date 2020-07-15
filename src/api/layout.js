@@ -11,9 +11,9 @@ function getUserInfo() {
 function logout() {
   return _fetch({
     url: "/logout",
-    headers: {
-      token: getLocal(),
-    },
+    // headers: {
+    //   token: getLocal(),
+    // },
   });
 }
 

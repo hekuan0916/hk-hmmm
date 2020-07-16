@@ -10,13 +10,13 @@
         <li class="nouse"></li>
         <li>
           <img
-            v-if="userInfo != ''"
+            v-if="$store.state.userInfo != ''"
             class="avatar"
             alt=""
-            :src="baseURL + '/' + userInfo.avatar"
+            :src="baseURL + '/' + $store.state.userInfo.avatar"
           />
         </li>
-        <li class="t2">{{ userInfo.username }},您好</li>
+        <li class="t2">{{ $store.state.userInfo.username }},您好</li>
         <li>
           <el-button type="primary" @click="exit">退出</el-button>
         </li>
@@ -76,7 +76,8 @@ export default {
       return;
     }
     getUserInfo().then((res) => {
-      this.userInfo = res.data;
+      // this.userInfo = res.data;
+      this.$store.state.userInfo = res.data;
       window.console.log("用户信息:", res);
     });
   },

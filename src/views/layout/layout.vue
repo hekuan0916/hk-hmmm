@@ -30,23 +30,23 @@
           :collapse="collapse"
           router
         >
-          <el-menu-item index="chart">
+          <el-menu-item index="/chart">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
-          <el-menu-item index="userlist">
+          <el-menu-item index="/userlist">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="question">
+          <el-menu-item index="/question">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
-          <el-menu-item index="business">
+          <el-menu-item index="/business">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
-          <el-menu-item index="subject">
+          <el-menu-item index="/subject">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
           </el-menu-item>
@@ -61,7 +61,7 @@
 
 <script>
 import { getUserInfo, logout } from "@/api/layout.js";
-import { removeLocal } from "@/utils/local.js";
+import { removeLocal, getLocal } from "@/utils/local.js";
 export default {
   data() {
     return {
@@ -71,6 +71,10 @@ export default {
     };
   },
   created() {
+    if (!getLocal()) {
+      this.$router.push("/");
+      return;
+    }
     getUserInfo().then((res) => {
       this.userInfo = res.data;
       window.console.log("用户信息:", res);
@@ -78,11 +82,17 @@ export default {
   },
   methods: {
     exit() {
-      logout().then(() => {
-        this.$message.success("退出成功");
-        removeLocal();
-        this.$router.push("/login");
-      });
+      this.$confirm("你不搞了吗", "提示", {
+        confirmButtonText: "不搞了",
+        cancelButtonText: "继续搞",
+        type: "error",
+      }).then(() =>
+        logout().then(() => {
+          this.$message.success("退出成功");
+          removeLocal();
+          this.$router.push("/login");
+        })
+      );
     },
   },
 };
@@ -100,6 +110,7 @@ export default {
         flex: 1;
       }
       .avatar {
+        margin-right: 15px;
         width: 43px;
         height: 43px;
         border-radius: 50%;

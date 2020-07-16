@@ -1,6 +1,6 @@
 import VueRouter from "vue-router";
-import login from "@/views/login/login.vue";
-import layout from "@/views/layout/layout.vue";
+import login from "@/views/login/login";
+import layout from "@/views/layout/layout";
 import chart from "@/views/layout/chart/chart";
 import business from "@/views/layout/business/business";
 import question from "@/views/layout/question/question";
@@ -15,6 +15,9 @@ const router = new VueRouter({
     {
       path: "/",
       redirect: "/login",
+      mete: {
+        title: "登陆页",
+      },
     },
     {
       path: "/login",
@@ -23,33 +26,71 @@ const router = new VueRouter({
     {
       path: "/layout",
       component: layout,
+      redirect: "/business",
+      mete: {
+        title: "首页",
+      },
       children: [
         {
-          path: "/chart",
+          path: "/chart", //相对(不学/号,相对于自己父级),完整模式,/开头
           component: chart,
-        },
-        {
-          path: "/business",
-          component: business,
-        },
-        {
-          path: "/question",
-          component: question,
-        },
-        {
-          path: "/subject",
-          component: subject,
+          mete: {
+            title: "数据列表",
+          },
         },
         {
           path: "/userlist",
           component: userlist,
+          mete: {
+            title: "用户列表",
+          },
+        },
+        {
+          path: "/question",
+          component: question,
+          mete: {
+            title: "问题列表",
+          },
+        },
+        {
+          path: "/business",
+          component: business,
+          mete: {
+            title: "企业列表",
+          },
+        },
+        {
+          path: "/subject",
+          component: subject,
+          mete: {
+            title: "学科列表",
+          },
         },
       ],
     },
   ],
 });
 
-export default router;
-// { router };
+//导入导航守卫
+//进入前守卫
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
-chart;
+router.beforeEach((to, from, next) => {
+  // to and from are both route objects. must call `next`.
+  console.log("打哪里去:", to); //去哪里的路由信息
+  console.log("从哪里来:", from); //from从哪里来的路由信息
+  NProgress.start();
+  next();
+});
+
+//进入后守卫
+router.afterEach((to, from) => {
+  // to and from are both route objects.
+  console.log("afterEach去哪里:", to);
+  console.log("afterEach从哪来", from);
+  NProgress.done();
+});
+export default router;
+
+// export { router };

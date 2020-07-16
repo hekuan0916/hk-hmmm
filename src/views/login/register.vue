@@ -208,8 +208,8 @@ export default {
           phone: this.form.phone,
         })
           .then((res) => {
-            this.$message.success(res.data.data.captcha + "");
-            console.log(this.$message.success(res.data.data.captcha + ""));
+            this.$message.success(res.data.captcha + "");
+            console.log(this.$message.success(res.data.captcha + ""));
           })
           .catch((error) => {
             window.console.log("获取验证码错误信息:", error);

@@ -164,6 +164,7 @@ export default {
           // this.$message.success("牛批");
           toLogin(this.form).then((res) => {
             this.$message.success("登陆成功");
+            // 保存 token
             saveLocal(res.data.token);
             // console.log(res);
             this.$router.push("/layout");

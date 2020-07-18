@@ -29,7 +29,7 @@ const router = new VueRouter({
     {
       path: "/layout",
       component: layout,
-      redirect: "/business",
+      redirect: "/subject",
       meta: {
         title: "首页",
       },

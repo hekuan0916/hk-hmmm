@@ -77,7 +77,20 @@ export default {
     }
     getUserInfo().then((res) => {
       // this.userInfo = res.data;
+      //vuex数据存储
       this.$store.state.userInfo = res.data;
+      this.$store.state.role = res.data.role;
+      // if (this.$router.meta.roles.includes(this.$store.state.role) === false) {
+      //   this.$message.error("您无权访问该页面");
+      //   removeLocal();
+      //   this.$router.push("/login");
+      // }
+      // alert(this.$route.path);
+      // if (res.data.status == 0) {
+      //   this.$message.warning("您的账号让禁用了,请联管理员");
+      //   removeLocal();
+      //   this.$router.push("/login");
+      // }
       window.console.log("用户信息:", res);
     });
   },
@@ -146,9 +159,6 @@ export default {
       width: 200px;
       min-height: 400px;
     }
-  }
-  .main {
-    // background-color: #e8e9ec;
   }
 }
 </style>

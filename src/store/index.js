@@ -14,6 +14,7 @@ const store = new Vuex.Store({
   state: {
     userInfo: "", //用户信息
     // 用户信息：很多地方使用用户信息，
+    role: "超级管理员",
   },
 });
 export default store;
